@@ -1,9 +1,11 @@
 name: Bstage Product Monitor
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"
   workflow_dispatch:
+
+concurrency:
+  group: bstage-stock-monitor
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -27,7 +29,6 @@ jobs:
 
       - name: 執行庫存檢查腳本
         env:
-          TARGET_URL: "https://daesung.bstage.in/shop/products/59"
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python monitor.py
