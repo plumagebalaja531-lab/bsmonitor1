@@ -2,9 +2,8 @@ name: Bstage Product Monitor
 
 on:
   schedule:
-    # 每 5 分鐘執行一次（UTC 時間，GitHub Actions 最短支援 5 分鐘間隔）
     - cron: "*/5 * * * *"
-  workflow_dispatch: # 允許你在網頁上按按鈕「立刻手動測試一次」
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -35,5 +34,6 @@ jobs:
           git add state.json
           if ! git diff --staged --quiet; then
             git commit -m "Update stock status"
+            git pull --rebase --autostash origin main
             git push
           fi
