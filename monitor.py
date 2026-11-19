@@ -12,7 +12,6 @@ URLS = [
     "https://daesung.bstage.in/shop/products/64",
 ]
 
-
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 STATE_FILE = "state.json"
@@ -43,12 +42,13 @@ def send_telegram(message: str) -> None:
 
 
 def fetch_rendered_text(page, url: str) -> str:
-    page.goto(url, wait_until="domcontentloaded", timeout=30000)
+    page.goto(url, wait_until="domcontentloaded", timeout=20000)
     try:
-        page.wait_for_load_state("networkidle", timeout=10000)
+        page.wait_for_load_state("networkidle", timeout=6000)
     except Exception:
         pass
-    page.wait_for_timeout(3000)
+    # 縮短為 1.2 秒，加快 6 件商品巡邏速度
+    page.wait_for_timeout(1200)
     return page.inner_text("body").lower()
 
 
@@ -65,11 +65,8 @@ def load_states() -> dict:
     with open(STATE_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    # 相容舊版單一 status 格式
     if isinstance(data, dict) and "items" in data and isinstance(data["items"], dict):
         return data["items"]
-    if isinstance(data, dict) and "status" in data:
-        return {"https://daesung.bstage.in/shop/products/59": data["status"]}
     return {}
 
 
