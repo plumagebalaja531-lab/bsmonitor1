@@ -20,6 +20,11 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: 安裝無頭瀏覽器套件
+        run: |
+          pip install playwright
+          playwright install chromium
+
       - name: 執行庫存檢查腳本
         env:
           TARGET_URL: "https://daesung.bstage.in/shop/products/59"
