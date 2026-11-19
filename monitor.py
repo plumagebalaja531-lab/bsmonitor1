@@ -9,7 +9,7 @@ CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 STATE_FILE = "state.json"
 
 # 常見缺貨字眼（可依實際頁面看到的文字增減）
-SOLD_OUT_KEYWORDS = ["sold out", "out of stock", "품절", "일시품절", "매진"]
+SOLD_OUT_KEYWORDS = "Sold out"
 
 
 def send_telegram(message: str) -> None:
